@@ -1,12 +1,24 @@
 import logo from "../assets/GloboLogo.png";
+import { logo as logoClass } from "./Banner.module.css";
+
+//! important to remember to not put this into component function since it gets called everytime it is re-rendered
+//! since this is a private member of the module this css is isolated
+//! but this approach is not encouraged
+const subtitleStyle = {
+  fontStyle: "italic",
+  fontSize: "x-large",
+  color: "coral",
+};
 
 const Banner = () => {
   return (
-    <header>
-      <div>
-        <img src={logo} alt="logo" />
+    <header className="row mb-4">
+      <div className="col-5">
+        <img src={logo} className={logoClass} alt="logo" />
       </div>
-      <div>Providing houses all over the world</div>
+      <div className="col-7 mt-5" style={subtitleStyle}>
+        Providing houses all over the world
+      </div>
     </header>
   );
 };
