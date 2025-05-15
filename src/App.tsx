@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <Banner headerText="Providing houses all over the world" />
+      <Banner>"Providing houses all over the world"</Banner>
     </>
   );
 }
