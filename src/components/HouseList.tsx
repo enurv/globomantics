@@ -19,7 +19,7 @@ const HouseList = () => {
       setHouses(houses);
     };
     fetchHouses();
-  });
+  }, []);
 
   //const [counter, setCounter] = useState(0);
   //! setCounter can take a function parameter that gets the current state
@@ -56,7 +56,7 @@ const HouseList = () => {
           </tr>
         </thead>
         <tbody>
-          {houses.map((h, index) => (
+          {houses.map((h) => (
             // key property is needed whenever an array of Reacts elements is created on the jsx/tsx
             // if there is no unique id value you can use the map index as a last resort but this can cause problems when the item orders have changed
             <HouseRow
