@@ -1,3 +1,4 @@
+import React from "react";
 import currencyFormatter from "../helpers/currencyFormatter";
 
 const HouseRow = ({
@@ -18,4 +19,10 @@ const HouseRow = ({
   );
 };
 
+// React.memo has overhad in terms of performance. 
+// You should only use if the performance gain measurable and it is a pure component (only dependent on the props)
+// memo only compares the shallow reference. For more info https://react.dev/reference/react/memo
+const HouseRowMemo = React.memo(HouseRow);
+
 export default HouseRow;
+export { HouseRowMemo };
