@@ -1,24 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HouseRow from "./HouseRow";
 
-const houseArray = [
-  {
-    id: 1,
-    address: "12 Valley of Kings, Geneva",
-    country: "Switzerland",
-    price: 900000,
-  },
-  {
-    id: 2,
-    address: "Enver'e cok asigimmmmm",
-    country: "Switzerland",
-    price: 500000,
-  },
-];
+interface house {
+  id: number;
+  address: string;
+  country: string;
+  price: number;
+}
 
 const HouseList = () => {
   //houses state is readonly use setHouses to change the state
-  const [houses, setHouses] = useState(houseArray);
+  const [houses, setHouses] = useState<house[]>([]);
+
+  useEffect(() => {
+    const fetchHouses = async () => {
+      const response = await fetch("https://localhost:4000/house");
+      const houses = await response.json();
+      setHouses(houses);
+    };
+    fetchHouses();
+  });
 
   //const [counter, setCounter] = useState(0);
   //! setCounter can take a function parameter that gets the current state
