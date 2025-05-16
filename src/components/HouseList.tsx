@@ -27,17 +27,22 @@ const HouseList = () => {
   //! this approach ensures that current is set by the previous call hence this approach is reccomended
   //setCounter((current) => current + 1);
 
-  const addHouse = () => {
-    //set functions have to change the reference so it needs to create new array
-    setHouses([
-      ...houses,
-      {
-        id: 6,
-        address: "32 Valley Way, New york",
-        country: "USA",
-        price: 1000000,
+  const addHouse = async () => {
+    const newHouse = {
+      id: houses.length + 1,
+      address: "32 Valley Way, New york",
+      country: "USA",
+      price: 1000000,
+    };
+    const response = await fetch("https://localhost:4000/house", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    ]);
+      body: JSON.stringify(newHouse),
+    });
+    const responseHouse = await response.json();
+    setHouses((current) => [...current, responseHouse]);
   };
 
   return (
