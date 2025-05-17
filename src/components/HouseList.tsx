@@ -1,4 +1,4 @@
-import { use, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import HouseRow from "./HouseRow";
 import AddButton from "./AddButton";
 
@@ -28,8 +28,7 @@ const HouseList = () => {
   //! this approach ensures that current is set by the previous call hence this approach is reccomended
   //setCounter((current) => current + 1);
 
-  const addHouse = useCallback(
-   async () => {
+  const addHouse = useCallback(async () => {
     const newHouse = {
       address: "32 Valley Way, New york",
       country: "USA",
