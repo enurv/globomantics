@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import HouseRow from "./HouseRow";
+import AddButton from "./AddButton";
 
 interface house {
   id: number;
@@ -27,9 +28,9 @@ const HouseList = () => {
   //! this approach ensures that current is set by the previous call hence this approach is reccomended
   //setCounter((current) => current + 1);
 
-  const addHouse = async () => {
+  const addHouse = useCallback(
+   async () => {
     const newHouse = {
-      id: houses.length + 1,
       address: "32 Valley Way, New york",
       country: "USA",
       price: 1000000,
@@ -43,7 +44,7 @@ const HouseList = () => {
     });
     const responseHouse = await response.json();
     setHouses((current) => [...current, responseHouse]);
-  };
+  }, []);
 
   return (
     <>
@@ -74,9 +75,7 @@ const HouseList = () => {
           ))}
         </tbody>
       </table>
-      <button className="btn btn-primary" onClick={addHouse}>
-        Add
-      </button>
+      <AddButton addHouse={addHouse} />
     </>
   );
 };
