@@ -11,7 +11,11 @@ export interface houseModel {
   description: string;
 }
 
-const HouseList = () => {
+const HouseList = ({
+  selectHouse,
+}: {
+  selectHouse: (house: houseModel) => void;
+}) => {
   //houses state is readonly use setHouses to change the state
   const [houses, setHouses] = useState<houseModel[]>([]);
 
@@ -66,12 +70,7 @@ const HouseList = () => {
           {houses.map((h) => (
             // key property is needed whenever an array of Reacts elements is created on the jsx/tsx
             // if there is no unique id value you can use the map index as a last resort but this can cause problems when the item orders have changed
-            <HouseRow
-              address={h.address}
-              country={h.country}
-              price={h.price}
-              key={h.id}
-            />
+            <HouseRow key={h.id} house={h} selectHouse={selectHouse} />
             // <HouseRow {...h} key={h.id} />  object destructing alternative but could cause performance issues
           ))}
         </tbody>
