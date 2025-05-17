@@ -40,3 +40,13 @@ const HouseList = () => {
 ```
 
 There is a problem with this code. Promise is outside of the component function. It will be created just once for the entire lifecycle of the application so when HouseList is rerendered or used elsewehere data will not be reloaded (will act like cached). Moving the creation of the of the proise inside the component will not fix the problem because it creates an infinite loop. When the state changes component will re-render and create a new promise that will change the state. Right now there are external libraries that solves these problems such as Tanstack Query.
+
+# Memo
+
+useMemo hook can be used to memoize the result of performance heavy functions with their dependency listed like useEffect. It will get run on first render and when the dependencies changes. You shouldn't use useMemo for every operation because of the overhead of the hook.
+
+```
+const result = useMemo(() => {
+    return timeConsumingCalculation(houses);
+}, [houses])
+```
