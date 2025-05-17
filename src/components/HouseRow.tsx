@@ -14,12 +14,16 @@ const HouseRow = ({
     <tr>
       <td>{address}</td>
       <td>{country}</td>
-      <td>{currencyFormatter.format(price)}</td>
+      {price && (
+        <td className={price >= 500000 ? "text-primary" : ""}>
+          {currencyFormatter.format(price)}
+        </td>
+      )}
     </tr>
   );
 };
 
-// React.memo has overhad in terms of performance. 
+// React.memo has overhad in terms of performance.
 // You should only use if the performance gain measurable and it is a pure component (only dependent on the props)
 // memo only compares the shallow reference. For more info https://react.dev/reference/react/memo
 const HouseRowMemo = React.memo(HouseRow);
