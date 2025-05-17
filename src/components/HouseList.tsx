@@ -2,16 +2,18 @@ import { useCallback, useEffect, useState } from "react";
 import HouseRow from "./HouseRow";
 import AddButton from "./AddButton";
 
-interface house {
+export interface houseModel {
   id: number;
   address: string;
   country: string;
   price: number;
+  photo: string;
+  description: string;
 }
 
 const HouseList = () => {
   //houses state is readonly use setHouses to change the state
-  const [houses, setHouses] = useState<house[]>([]);
+  const [houses, setHouses] = useState<houseModel[]>([]);
 
   useEffect(() => {
     const fetchHouses = async () => {
