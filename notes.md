@@ -50,3 +50,20 @@ const result = useMemo(() => {
     return timeConsumingCalculation(houses);
 }, [houses])
 ```
+
+# Ref
+
+useRef hook is used to persist data between re-renders just like state but changing a ref does not trigger re-render. When a reference type is passed to useRef this hook guarantees the same reference is returned across re-renders. It is mostly used for holding the element ref just like Angular's template reference variables.
+
+```
+const TextInputWithFocusButton = () => {
+    const inputEl = useRef(null);
+    const onButtonClick = () => inputEl.current.focus();
+    return (
+        <>
+            <input ref={inputEl} type="text" />
+            <button onClick={onButtonClick}>Focus the input</button>
+        </>
+    )
+}
+```
