@@ -69,3 +69,6 @@ const TextInputWithFocusButton = () => {
 ```
 # Callback
 useCallback prevents children to re-render each time parent is re-rendered by memoizing the reference of some methods that is given as a prop. It works like an effect. It gets created first when the component mounted and gets re-created if any of it's dependencies change. setState calls does not have to be wrapped with useCallBack because React make sure to keep their reference.
+
+# Custom Hooks
+A custim hook is a function which can accept any parameter and return anything you want. Whena custom hook is reused, state for each call is isolated. (not singleton)

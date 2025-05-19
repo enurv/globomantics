@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import HouseRow from "./HouseRow";
+import { useCallback } from "react";
+import useHouses from "../hooks/useHouses";
 import AddButton from "./AddButton";
+import HouseRow from "./HouseRow";
 
 export interface houseModel {
   id: number;
@@ -16,23 +17,14 @@ const HouseList = ({
 }: {
   selectHouse: (house: houseModel) => void;
 }) => {
-  //houses state is readonly use setHouses to change the state
-  const [houses, setHouses] = useState<houseModel[]>([]);
-
-  useEffect(() => {
-    const fetchHouses = async () => {
-      const response = await fetch("https://localhost:4000/house");
-      const houses = await response.json();
-      setHouses(houses);
-    };
-    fetchHouses();
-  }, []);
-
-  //const [counter, setCounter] = useState(0);
+  // State is readonly use setHouses to change the state
+  // const [counter, setCounter] = useState(0);
   //! setCounter can take a function parameter that gets the current state
   //! if there is multiple call to setter react can batch those calls for efficiency only updating the state when batch completes
   //! this approach ensures that current is set by the previous call hence this approach is reccomended
   //setCounter((current) => current + 1);
+
+  const {houses, setHouses} = useHouses();
 
   const addHouse = useCallback(async () => {
     const newHouse = {
