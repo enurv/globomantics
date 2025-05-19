@@ -2,6 +2,8 @@ import { useCallback } from "react";
 import useHouses from "../hooks/useHouses";
 import AddButton from "./AddButton";
 import HouseRow from "./HouseRow";
+import loadingStatus from "../helpers/loadingStatus";
+import LoadingIndicator from "./LoadingIndicator";
 
 export interface houseModel {
   id: number;
@@ -24,8 +26,7 @@ const HouseList = ({
   //! this approach ensures that current is set by the previous call hence this approach is reccomended
   //setCounter((current) => current + 1);
 
-  const {houses, setHouses} = useHouses();
-
+  const { houses, setHouses, loadingState } = useHouses();
   const addHouse = useCallback(async () => {
     const newHouse = {
       address: "32 Valley Way, New york",
@@ -42,6 +43,10 @@ const HouseList = ({
     const responseHouse = await response.json();
     setHouses((current) => [...current, responseHouse]);
   }, []);
+
+  if (loadingState !== loadingStatus.loaded) { // component can return null to not render anything
+    return <LoadingIndicator loadingState={loadingState} />;
+  }
 
   return (
     <>
