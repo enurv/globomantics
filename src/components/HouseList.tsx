@@ -4,6 +4,7 @@ import AddButton from "./AddButton";
 import HouseRow from "./HouseRow";
 import loadingStatus from "../helpers/loadingStatus";
 import LoadingIndicator from "./LoadingIndicator";
+import ErrorBoundary from "./ErrorBoundary";
 
 export interface houseModel {
   id: number;
@@ -44,7 +45,8 @@ const HouseList = ({
     setHouses((current) => [...current, responseHouse]);
   }, []);
 
-  if (loadingState !== loadingStatus.loaded) { // component can return null to not render anything
+  if (loadingState !== loadingStatus.loaded) {
+    // component can return null to not render anything
     return <LoadingIndicator loadingState={loadingState} />;
   }
 
@@ -64,12 +66,14 @@ const HouseList = ({
           </tr>
         </thead>
         <tbody>
-          {houses.map((h) => (
-            // key property is needed whenever an array of Reacts elements is created on the jsx/tsx
-            // if there is no unique id value you can use the map index as a last resort but this can cause problems when the item orders have changed
-            <HouseRow key={h.id} house={h} selectHouse={selectHouse} />
-            // <HouseRow {...h} key={h.id} />  object destructing alternative but could cause performance issues
-          ))}
+          <ErrorBoundary fallback="Error loading house rows">
+            {houses.map((h) => (
+              // key property is needed whenever an array of Reacts elements is created on the jsx/tsx
+              // if there is no unique id value you can use the map index as a last resort but this can cause problems when the item orders have changed
+              <HouseRow key={h.id} house={h} selectHouse={selectHouse} />
+              // <HouseRow {...h} key={h.id} />  object destructing alternative but could cause performance issues
+            ))}
+          </ErrorBoundary>
         </tbody>
       </table>
       <AddButton addHouse={addHouse} />

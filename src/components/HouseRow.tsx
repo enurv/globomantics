@@ -4,7 +4,7 @@ import type { houseModel } from "./HouseList";
 
 const HouseRow = ({
   house,
-  selectHouse
+  selectHouse,
 }: {
   house: houseModel;
   selectHouse: (house: houseModel) => void;
