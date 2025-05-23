@@ -9,14 +9,14 @@ import type { houseModel } from "./components/HouseList";
 
 function App() {
   const navigate = useCallback(
-    (navTo: string, param: houseModel) =>
+    (navTo: string, param: houseModel | null) =>
       setNav({ current: navTo, param, navigate }),
     []
   );
   const [nav, setNav] = useState<{
     current: string;
     param: houseModel | null;
-    navigate: (navTo: string, param: houseModel) => void;
+    navigate: (navTo: string, param: houseModel | null) => void;
   }>({ current: navValues.home, param: null, navigate });
 
   return (

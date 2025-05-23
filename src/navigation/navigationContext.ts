@@ -5,7 +5,7 @@ import type { houseModel } from "../components/HouseList";
 const navigationContext = createContext<{
   current: string;
   param: houseModel | null;
-  navigate: (navTo: string, param: houseModel) => void;
+  navigate: (navTo: string, param: houseModel | null) => void;
 }>({
   current: navValues.home,
   param: null,

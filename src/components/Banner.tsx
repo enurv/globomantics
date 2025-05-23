@@ -1,6 +1,8 @@
-import type { ReactNode } from "react";
+import { useContext, type ReactNode } from "react";
 import logo from "../assets/GloboLogo.png";
-import styles from "./Banner.module.css"
+import styles from "./Banner.module.css";
+import navValues from "../navigation/navValues";
+import navigationContext from "../navigation/navigationContext";
 //! important to remember to not put this into component function since it gets called everytime it is re-rendered
 //! since this is a private member of the module this css is isolated
 //! but this approach is not encouraged
@@ -10,12 +12,19 @@ const subtitleStyle = {
   color: "coral",
 };
 
-const Banner = ({ children }: {children: ReactNode}) => {
+const Banner = ({ children }: { children: ReactNode }) => {
   //! props must be readonly
+
+  const { navigate } = useContext(navigationContext);
   return (
     <header className="row mb-4">
       <div className="col-5">
-        <img src={logo} className={styles.logo} alt="logo" />
+        <img
+          src={logo}
+          className={styles.logo}
+          alt="logo"
+          onClick={() => navigate(navValues.home, null)}
+        />
       </div>
       <div className="col-7 mt-5" style={subtitleStyle}>
         {children}
