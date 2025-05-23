@@ -85,7 +85,7 @@ A custom hook is a function which can accept any parameter and return anything y
 
 ## Context
 
-useContext defines the data api. Component that holds the state and and manages it returning context provider is similar to service instance. useContext is like injecting the service. Creating a wrapper hook around useContext is for dealing with default values and reduce repetitive code.
+useContext defines the data api. Component that holds the state and and manages it returning context provider is similar to service instance. useContext is like injecting the service. Creating a wrapper hook around useContext is for dealing with default values and reduce repetitive code. Components that are usıng a context will be re-rendered when context values are changed.
 
 ### Context optimization
 
