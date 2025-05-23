@@ -1,5 +1,9 @@
 # Personal Notes
 
+## State
+
+Use useState for data that changes over time and needs to trigger a re-render.
+
 ## Hooks
 
 Hooks have two rules
@@ -51,6 +55,9 @@ const result = useMemo(() => {
 }, [houses])
 ```
 
+When to use:
+When you want to avoid expensive recalculations or to keep the same reference for objects/functions between renders unless dependencies change. Use useMemo for derived values or objects/functions that you want to keep the same reference unless dependencies change, especially to optimize performance or prevent unnecessary re-renders.
+
 ## Ref
 
 useRef hook is used to persist data between re-renders just like state but changing a ref does not trigger re-render. When a reference type is passed to useRef this hook guarantees the same reference is returned across re-renders. It is mostly used for holding the element ref just like Angular's template reference variables.
@@ -67,8 +74,109 @@ const TextInputWithFocusButton = () => {
     )
 }
 ```
+
 ## Callback
+
 useCallback prevents children to re-render each time parent is re-rendered by memoizing the reference of some methods that is given as a prop. It works like an effect. It gets created first when the component mounted and gets re-created if any of it's dependencies change. setState calls does not have to be wrapped with useCallBack because React make sure to keep their reference.
 
 ## Custom Hooks
-A custim hook is a function which can accept any parameter and return anything you want. Whena custom hook is reused, state for each call is isolated. (not singleton)
+
+A custom hook is a function which can accept any parameter and return anything you want. When a custom hook is reused, state for each call is isolated. (not singleton)
+
+## Context
+
+useContext defines the data api. Component that holds the state and and manages it returning context provider is similar to service instance. useContext is like injecting the service. Creating a wrapper hook around useContext is for dealing with default values and reduce repetitive code.
+
+### Context optimization
+
+### Example 1: Non-Optimized Context Value
+
+```tsx
+const [current, setCurrent] = useState(navValues.home);
+
+<navigationContext.Provider value={{ current, setCurrent }}>
+  {children}
+</navigationContext.Provider>;
+```
+
+**How it works:**
+
+- On every render, `{ current, setCurrent }` creates a new object.
+- Even if `current` and `setCurrent` haven't changed, the object reference is new.
+- All context consumers re-render on every parent render, even if the value is the same.
+
+---
+
+### Example 2: Optimized (Stable) Context Value
+
+```tsx
+const navigate = useCallback(
+  (navTo: string) => setNav({ current: navTo, navigate }),
+  []
+);
+const [nav, setNav] = useState({ current: navValues.home, navigate });
+
+<navigationContext.Provider value={nav}>{children}</navigationContext.Provider>;
+```
+
+**How it works:**
+
+- The entire context value (`nav`) is stored in state.
+- The reference to `nav` only changes when you call `setNav` (i.e., when navigation changes).
+- On unrelated parent renders, the reference to `nav` stays the same.
+- Context consumers only re-render when navigation actually changes.
+
+---
+
+### Step-by-Step Comparison
+
+| Step | Non-Optimized Version (`{ current, setCurrent }`) | Optimized Version (`{ current, navigate }` in state)       |
+| ---- | ------------------------------------------------- | ---------------------------------------------------------- |
+| 1    | Parent renders                                    | Parent renders                                             |
+| 2    | New object `{ current, setCurrent }` is created   | `nav` object reference stays the same unless changed       |
+| 3    | Context value reference changes                   | Context value reference only changes if navigation changes |
+| 4    | All consumers re-render, even if nothing changed  | Consumers re-render **only** if navigation changes         |
+
+---
+
+**Summary:**
+
+- If you pass a new object as context value on every render, all consumers will re-render every time.
+- If you keep the context value reference stable (by storing it in state or memoizing it), consumers only re-render when necessary.
+- This improves performance and avoids unnecessary updates.
+
+### Alternatıve Apprıach
+
+```
+function App() {
+  const [current, setCurrent] = useState(navValues.home);
+
+  // Memoize the navigation function
+  const navigate = useCallback(
+    (navTo: string) => setCurrent(navTo),
+    []
+  );
+
+  // Memoize the context value object
+  const contextValue = useMemo(
+    () => ({
+      current,
+      navigate,
+    }),
+    [current, navigate]
+  );
+
+  return (
+    <navigationContext.Provider value={contextValue}>
+      <ErrorBoundary fallback="Something went wrong">
+        <Banner>"Providing houses all over the world"</Banner>
+        <ComponentPicker currentNavLocation={current} />
+      </ErrorBoundary>
+    </navigationContext.Provider>
+  );
+}
+
+export default App;
+```
+
+Read more at https://react.dev/reference/react/useContext#optimizing-re-renders-when-passing-objects-and-functions
