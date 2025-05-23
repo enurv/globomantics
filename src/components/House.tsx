@@ -1,14 +1,14 @@
-import { useContext } from "react";
+import { useLocation } from "react-router";
 import currencyFormatter from "../helpers/currencyFormatter";
-import navigationContext from "../navigation/navigationContext";
 
 const House = () => {
-  const { param: house } = useContext(navigationContext);
+  // const {id} = useParams();
+  // fetch house info using id
 
-  if (!house) {
-    throw new Error("House data is not available");
-  }
-  
+  const location = useLocation();
+
+  const { house } = location.state;
+
   return (
     <>
       <div className="row">

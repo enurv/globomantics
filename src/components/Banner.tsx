@@ -3,6 +3,7 @@ import logo from "../assets/GloboLogo.png";
 import styles from "./Banner.module.css";
 import navValues from "../navigation/navValues";
 import navigationContext from "../navigation/navigationContext";
+import { useNavigate } from "react-router";
 //! important to remember to not put this into component function since it gets called everytime it is re-rendered
 //! since this is a private member of the module this css is isolated
 //! but this approach is not encouraged
@@ -15,7 +16,8 @@ const subtitleStyle = {
 const Banner = ({ children }: { children: ReactNode }) => {
   //! props must be readonly
 
-  const { navigate } = useContext(navigationContext);
+  const navigate = useNavigate();
+  
   return (
     <header className="row mb-4">
       <div className="col-5">
@@ -23,7 +25,7 @@ const Banner = ({ children }: { children: ReactNode }) => {
           src={logo}
           className={styles.logo}
           alt="logo"
-          onClick={() => navigate(navValues.home, null)}
+          onClick={() => navigate("/")}
         />
       </div>
       <div className="col-7 mt-5" style={subtitleStyle}>
