@@ -150,7 +150,7 @@ const [nav, setNav] = useState({ current: navValues.home, navigate });
 - If you keep the context value reference stable (by storing it in state or memoizing it), consumers only re-render when necessary.
 - This improves performance and avoids unnecessary updates.
 
-### Alternatıve Approach
+### Alternative Approach
 
 ```
 function App() {
@@ -185,3 +185,58 @@ export default App;
 ```
 
 Read more at https://react.dev/reference/react/useContext#optimizing-re-renders-when-passing-objects-and-functions
+
+## Forms
+### Text Area
+
+textarea input normally works like
+
+```
+<textarea>
+  Some text
+</textarea>
+```
+but in jsx it works similar to input
+
+`<textarea value={state} onChange={change} />`
+
+### Select
+
+select input normally works like
+
+```
+<select>
+  <option value="option1">1</option>
+  <option selected value="option2">2</option>
+</select>
+```
+
+but in jsx it works similar to input
+```
+<select value={state} onChange={change}>
+  <option value="option1">1</option>
+  <option value="option2">2</option>
+</select>
+```
+
+### File
+
+File input is uncontrolled and needs to be defined with useRef()
+
+```
+const Form = () => {
+  const inputEl = useRef(null);
+  const submit = (e) => {
+    e.preventDefault();
+    const selectedFile = inputEl.current.files[0].name;
+    //process selectedFile
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <input ref={inputEl} type="file" />
+      <input type="submit" value="Submit" />
+    </form>
+  );
+}
+```
