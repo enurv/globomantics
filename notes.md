@@ -240,3 +240,16 @@ const Form = () => {
   );
 }
 ```
+
+## Transition
+
+When you use useTransition it gives you two outputs. One is pending state and the other is a method that takes an action. When you run an action (addBid in this case) while it is executing React will set isPending to true. This hook will run the action in the backgorund keeping the UI from freezing. It can be used whenever changing state is likely to take some time. It will improve the responsiveness of your application. Async action are only supported after React 19.
+
+```
+const [isPending, startTransition] = useTransition();
+
+const onBidSubmitClick = () => { 
+  startTransition(async () => await addBid(newBid));
+  setNewBid(emptyBid);
+};
+```
