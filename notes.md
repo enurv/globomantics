@@ -17,7 +17,10 @@ Rendering is not the same thing with browser update. It means calling the compon
 
 ## Effects
 
-Function given as a parameter to useEffect will be called after the rest of the component function is executed during mounting. Returned method could from the effect could be used as ngDestroy if it does not have any dependency but it gets called each time before the effect gets executed if it has dependencies.
+Function given as a parameter to useEffect will be called after the rest of the component function is executed during mounting. Returned method from the effect could be used as ngDestroy if it does not have any dependency but it gets called each time before the effect gets executed if it has dependencies.
+
+useEffect is for automatic, lifecycle-driven effects (like fetching data).
+User actions (like posting data) are handled by functions called in response to events, not in useEffect.
 
 ## Use (New feature)
 
@@ -79,9 +82,11 @@ const TextInputWithFocusButton = () => {
 
 useCallback prevents children to re-render each time parent is re-rendered by memoizing the reference of some methods that is given as a prop. It works like an effect. It gets created first when the component mounted and gets re-created if any of it's dependencies change. setState calls does not have to be wrapped with useCallBack because React make sure to keep their reference.
 
+You only need useCallback if you want to memoize a function that is passed to children or used as a dependency elsewhere. For internal helper functions  it’s fine to define them normally.
+
 ## Custom Hooks
 
-A custom hook is a function which can accept any parameter and return anything you want. When a custom hook is reused, state for each call is isolated. (not singleton)
+A custom hook is a function which can accept any parameter and return anything you want. When a custom hook is reused, state for each call is isolated. (not singleton). They can be use to abstract business or state management logic from components.
 
 ## Context
 
@@ -145,7 +150,7 @@ const [nav, setNav] = useState({ current: navValues.home, navigate });
 - If you keep the context value reference stable (by storing it in state or memoizing it), consumers only re-render when necessary.
 - This improves performance and avoids unnecessary updates.
 
-### Alternatıve Apprıach
+### Alternatıve Approach
 
 ```
 function App() {
