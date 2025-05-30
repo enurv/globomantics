@@ -299,3 +299,53 @@ React 19 introduced Form Actions. Instead of all components being bound to state
     </>
   );
 ```
+
+## Action State
+
+This hook is introduced with React 19 and it replaces a call to useState and providing some benefits over that. 
+
+`const [state, actionFunction, isPending] = useActionState(fn, initalState);`
+
+The first element of the array is the state variable that can be used just like a new state to render data. 
+
+Second element can be used on forms that uses form actions or something else that uses actions such as transition.
+
+`<form action={actionFunction}></form>`
+
+Third element is a boolean that gets set to true if action is executing. It can be used to show a loading indicator.
+
+useActionState takes two parameters. First one is the function the action will call (e.g. when it is used in the context of a form the submitted data can be sent to the API) 
+
+**when used on the form action**
+```
+const fn(prevState, formData) {
+  //new state will be available in the first elemnt of the array
+  return newState; 
+}
+```
+
+### Example usage
+
+```
+const [state, actionFunction, isPending] = useActionState(addBid, {error: null, bids: []});
+
+const addBid(prevState, formData) {
+  const bid = {
+    bidder: formData.get("bidder"),
+    amount: formData.get("amount")
+  }
+
+  try {
+    // send to API
+  }
+  catch (error) {
+    return { error, bids: prevState }
+  }
+  return {error: null, bids: [...prevState, bid]}
+};
+
+<form action={actionFunction}>
+    <input name="bidder" />
+    <input name="amount" />
+</form>
+```
