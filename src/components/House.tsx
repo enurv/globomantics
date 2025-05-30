@@ -19,8 +19,8 @@ const House = () => {
               className="img-fluid"
               src={
                 house.photo
-                  ? `./houseImages/${house.photo}.jpeg`
-                  : "./defaultphoto.png"
+                  ? `/houseImages/${house.photo}.jpeg`
+                  : "/defaultphoto.png"
               }
               alt="House pic"
             />
