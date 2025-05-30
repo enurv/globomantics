@@ -1,4 +1,3 @@
-import { useState, useTransition } from "react";
 import currencyFormatter from "../helpers/currencyFormatter";
 import loadingStatus from "../helpers/loadingStatus";
 import useBids from "../hooks/useBids";
@@ -12,24 +11,22 @@ export interface bidModel {
   amount: number;
 }
 
-const Bids = ({ house }: {house: houseModel}) => {
+const Bids = ({ house }: { house: houseModel }) => {
   const { bids, loadingState, addBid } = useBids(house.id);
-  const [isPending, startTransition] = useTransition();
-
-  const emptyBid = {
-    houseId: house.id,
-    bidder: "",
-    amount: 0,
-  };
-
-  const [newBid, setNewBid] = useState<bidModel>(emptyBid);
 
   if (loadingState !== loadingStatus.loaded)
     return <LoadingIndicator loadingState={loadingState} />;
 
-  const onBidSubmitClick = () => { 
-    startTransition(async () => await addBid(newBid));
-    setNewBid(emptyBid);
+  // FormData is an object native to JS that contains key/value pairs
+  // representing all the values submitted in the form.
+  const bidSubmitAction = async (formData: FormData) => {
+    // addBid changes state on the custom hook after sending request
+    // you can get the form data from the FormData object using input's name attributes
+    await addBid({
+      houseId: house.id,
+      bidder: formData.get("bidder") as string,
+      amount: parseFloat(formData.get("amount") as string),
+    });
   };
 
   return (
@@ -54,17 +51,13 @@ const Bids = ({ house }: {house: houseModel}) => {
           </table>
         </div>
       </div>
-      <div className="row">
+      <form action={bidSubmitAction} className="row row-cols-lg-auto">
         <div className="col-5">
           <input
             id="bidder"
             className="h-100 form-control"
             type="text"
-            value={newBid.bidder}
-            onChange={(e) => setNewBid({
-              ...newBid,
-              bidder: e.target.value
-            })}
+            name="bidder"
             placeholder="Bidder"
           ></input>
         </div>
@@ -73,24 +66,16 @@ const Bids = ({ house }: {house: houseModel}) => {
             id="amount"
             className="h-100 form-control"
             type="number"
-            value={newBid.amount}
-            onChange={(e) =>
-              setNewBid({
-                ...newBid,
-                amount: parseInt(e.target.value)
-              })
-            }
+            name="amount"
             placeholder="Amount"
           ></input>
         </div>
         <div className="col-2">
-          <button className="btn btn-primary"
-            onClick={onBidSubmitClick}
-            disabled={isPending}>
+          <button className="btn btn-primary" type="submit">
             Add
           </button>
         </div>
-      </div>
+      </form>
     </>
   );
 };

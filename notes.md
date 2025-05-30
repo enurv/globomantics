@@ -253,3 +253,49 @@ const onBidSubmitClick = () => {
   setNewBid(emptyBid);
 };
 ```
+
+## Form Actions
+
+React 19 introduced Form Actions. Instead of all components being bound to state and onChange event being handled, there now are inputs that are like any normal html form. Inputs and buttons gets wrapped with a form tag which has an attribute called action (a function running in the context of a transition) that is executed when the form is submitted. It does not require to useTransition hook to be used explicitly. React handles that itself. There is no need to call preventDefault since actions are not events. There is also no need for resetting the state after action since it will automatically clear the inputs after submit action. Advantage with this approach that there is no need to hold the state for form. If needed you can still change the state in the action. 
+
+```
+// FormData is an object native to JS that contains key/value pairs 
+  // representing all the values submitted in the form.
+  const bidSubmitAction = async (formData: FormData) => {
+    // addBid changes state on the custom hook after sending request
+    // you can get the form data from the FormData object using input's name attributes
+    await addBid({
+      houseId: house.id,
+      bidder: formData.get("bidder") as string,
+      amount: parseFloat(formData.get("amount") as string),
+    });
+  };
+
+  return (
+    <>
+      <form action={bidSubmitAction} className="row row-cols-lg-auto">
+        <div className="col-5">
+          <input
+            id="bidder"
+            type="text"
+            name="bidder"
+            placeholder="Bidder"
+          ></input>
+        </div>
+        <div className="col-5">
+          <input
+            id="amount"
+            type="number"
+            name="amount"
+            placeholder="Amount"
+          ></input>
+        </div>
+        <div className="col-2">
+          <button className="btn btn-primary" type="submit">
+            Add
+          </button>
+        </div>
+      </form>
+    </>
+  );
+```
