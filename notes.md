@@ -349,3 +349,9 @@ const addBid(prevState, formData) {
     <input name="amount" />
 </form>
 ```
+
+## Optimistic
+
+useOptimistic hook let us update the UI immediately without waiting for an action to complete. This hook can only be used with actions. It is called in addition to the normal useState call. It takes two parameters: first it the state it has to track and second is a function that will be called when it's action is called.
+
+```
