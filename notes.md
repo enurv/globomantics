@@ -46,7 +46,7 @@ const HouseList = () => {
 }
 ```
 
-There is a problem with this code. Promise is outside of the component function. It will be created just once for the entire lifecycle of the application so when HouseList is rerendered or used elsewehere data will not be reloaded (will act like cached). Moving the creation of the of the proise inside the component will not fix the problem because it creates an infinite loop. When the state changes component will re-render and create a new promise that will change the state. Right now there are external libraries that solves these problems such as Tanstack Query.
+There is a problem with this code. Promise is outside of the component function. It will be created just once for the entire lifecycle of the application so when HouseList is rerendered or used elsewehere data will not be reloaded (will act like cached). Moving the creation of the of the promise inside the component will not fix the problem because it creates an infinite loop. When the state changes component will re-render and create a new promise that will change the state. Right now there are external libraries that solves these problems such as Tanstack Query.
 
 ## Memo
 
@@ -352,6 +352,4 @@ const addBid(prevState, formData) {
 
 ## Optimistic
 
-useOptimistic hook let us update the UI immediately without waiting for an action to complete. This hook can only be used with actions. It is called in addition to the normal useState call. It takes two parameters: first it the state it has to track and second is a function that will be called when it's action is called.
-
-```
+useOptimistic hook let us update the UI immediately without waiting for an action to complete. This hook can only be used with actions. It is called in addition to the normal useState call. It takes two parameters: first it the state it has to track and second is a function that will be called when it's action is called. Optimistic bid uses the first parameter as the source of truth and gets updated when you update that state.
