@@ -1,6 +1,6 @@
 import { useEffect, useOptimistic, useState } from "react";
 import loadingStatus from "../helpers/loadingStatus";
-import type { bidModel } from "../components/Bids";
+import type { bidModel } from "../components/BidList";
 
 const useBids = (houseId: number) => {
   const [bids, setBids] = useState<bidModel[]>([]);

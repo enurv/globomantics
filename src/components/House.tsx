@@ -1,6 +1,10 @@
 import { useLocation } from "react-router";
 import currencyFormatter from "../helpers/currencyFormatter";
-import Bids from "./Bids";
+import BidList from "./BidList";
+import useBids from "../hooks/useBids";
+import AddBid from "./AddBid";
+import loadingStatus from "../helpers/loadingStatus";
+import LoadingIndicator from "./LoadingIndicator";
 
 const House = () => {
   // const {id} = useParams();
@@ -9,6 +13,11 @@ const House = () => {
   const location = useLocation();
 
   const { house } = location.state;
+
+  const { bids, loadingState, addBid } = useBids(house.id);
+
+  if (loadingState !== loadingStatus.loaded)
+    return <LoadingIndicator loadingState={loadingState} />;
 
   return (
     <>
@@ -41,7 +50,8 @@ const House = () => {
           <div className="row">
             <div className="col-12 mt-3">{house.description}</div>
           </div>
-          <Bids house={house} />
+          <BidList bids={bids} />
+          <AddBid house={house} addBid={addBid} />
         </div>
       </div>
     </>
