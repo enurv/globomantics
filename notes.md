@@ -4,6 +4,16 @@
 
 Use useState for data that changes over time and needs to trigger a re-render.
 
+React’s setValue function doesn’t update the state immediately—it’s asynchronous. This means React batches state updates for performance reasons, and the value variable might not reflect the latest state right away when you try to use it. This can cause problems if you try to update the state based on its current value by referencing value directly, like this:
+
+This might not work as expected
+`setValue(!value);`
+
+Because value might be "stale" due to JavaScript closures (a fancy term meaning the function might hold onto an older version of the state). If multiple state updates happen quickly, you might end up using an outdated value.
+
+To avoid this issue, React lets you pass a callback function to setValue that receives the previous state as an argument. This ensures you’re always working with the most up-to-date state. For example:
+`setValue(prevState => !prevState);`
+
 ## Hooks
 
 Hooks have two rules
